@@ -1,0 +1,82 @@
+/* src/styles.css */
+.home {
+  padding: 20px;
+}
+
+.card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.home .row {
+  display: flex;
+  flex-wrap: wrap; /* Khoảng cách giữa các cột */
+}
+
+.home .col-12,
+.home .col-md-4 {
+  flex: 0 0 33.3333%; /* Mỗi cột chiếm 1/3 chiều rộng */
+  max-width: 33.3333%;
+  padding: 0 8px; /* Giảm padding để tránh bị tràn */
+  box-sizing: border-box; /* Đảm bảo tính toán đúng chiều rộng */
+}
+
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box; /* Đảm bảo thẻ card tính đúng kích thước */
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Tạo tỷ lệ 1:1 cho ảnh */
+}
+
+.card-img-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.btn {
+  margin-top: auto;
+}
