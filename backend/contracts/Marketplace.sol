@@ -165,11 +165,22 @@ contract Marketplace {
 
         return productReviewList;
     }
-    
-    function getUserId(address walletAddress) public view returns (uint256) {
-    // Kiểm tra xem người dùng có tồn tại không, tránh lỗi khi truy cập
-    require(users[walletAddress].userId != 0, "User not found");
-    // Trả về userId của người dùng
-    return users[walletAddress].userId;
+
+    // Lấy username từ userId
+    function getUsername(uint256 _userId) public view returns (string memory) {
+        return users[_userId].username;
     }
+
+    // Lấy userId từ walletAddress
+    function getUserId(string memory _walletAddress) public view returns (uint256) {
+    for (uint256 i = 1; i <= userCount; i++) {
+        if (keccak256(bytes(users[i].walletAddress)) == keccak256(bytes(_walletAddress))) {
+            return users[i].userId; // Trả về userId thay vì id
+        }
+    }
+    revert("User not found");
+    }
+
+
+
 }

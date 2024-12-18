@@ -1,6 +1,8 @@
+//frontend\src\pages\Login.js
 import React, { useState } from "react";
 import { ethers } from "ethers";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json"; // Đường dẫn tới ABI của smart contract
+import saveUserToDatabase from "../component/saveUserToDatabase";
 
 const Login = () => {
   const [address, setAddress] = useState(null);
@@ -52,6 +54,7 @@ const Login = () => {
         return;
       }
 
+      // Kết nối với Ethereum và smart contract
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -60,8 +63,26 @@ const Login = () => {
         signer
       );
 
+      // Gọi hàm registerUser trên smart contract
       const tx = await contract.registerUser(username, email, address);
       await tx.wait();
+
+      // Lấy userId vừa tạo ra từ contract
+      const userCount = await contract.userCount();
+      const user = await contract.users(userCount);
+
+      // Tạo object người dùng để lưu vào cơ sở dữ liệu
+      const userInfo = {
+        userId: user.userId.toString(),
+        username: user.username,
+        email: user.email,
+        walletAddress: user.walletAddress,
+      };
+
+      // Gọi API để lưu vào database
+      await saveUserToDatabase(userInfo);
+
+      // Cập nhật giao diện
       setMessage("Registration successful! You are now logged in.");
       setIsRegistered(true);
     } catch (error) {

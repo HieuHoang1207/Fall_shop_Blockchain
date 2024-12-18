@@ -1,3 +1,4 @@
+//frontend\src\pages\Product.js
 import React, { useEffect, useState } from "react";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
 import { ethers } from "ethers";
@@ -29,7 +30,6 @@ const fetchProduct = async (productId) => {
     return null;
   }
 };
-
 // Hàm fetch bình luận sản phẩm
 const fetchReviews = async (productId) => {
   if (window.ethereum) {
@@ -44,15 +44,25 @@ const fetchReviews = async (productId) => {
 
       // Gọi hàm getReviews từ smart contract
       const reviewsData = await contract.getReviews(productId);
-      return reviewsData.map((review) => ({
-        reviewId: review.reviewId.toNumber(),
-        userId: review.userId.toNumber(),
-        rating: review.rating.toNumber(),
-        comment: review.comment,
-        createdAt: new Date(
-          review.createdAt.toNumber() * 1000
-        ).toLocaleDateString(),
-      }));
+
+      // Lấy username cho từng review
+      const reviewsWithUsernames = await Promise.all(
+        reviewsData.map(async (review) => {
+          const username = await contract.getUsername(review.userId.toNumber());
+          return {
+            reviewId: review.reviewId.toNumber(),
+            userId: review.userId.toNumber(),
+            username, // Thêm username vào kết quả
+            rating: review.rating.toNumber(),
+            comment: review.comment,
+            createdAt: new Date(
+              review.createdAt.toNumber() * 1000
+            ).toLocaleDateString(),
+          };
+        })
+      );
+
+      return reviewsWithUsernames;
     } catch (error) {
       console.error("There was an error fetching the reviews!", error);
       return [];
@@ -74,10 +84,8 @@ const Product = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
       const fetchedProduct = await fetchProduct(id);
       setProduct(fetchedProduct);
-
       const fetchedReviews = await fetchReviews(id);
       setReviews(fetchedReviews);
 
@@ -129,30 +137,6 @@ const Product = () => {
     }
   };
 
-  const fetchUserId = async () => {
-    if (window.ethereum) {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Địa chỉ hợp đồng Marketplace
-          Marketplace.abi,
-          signer
-        );
-
-        const userAddress = await signer.getAddress(); // Lấy địa chỉ ví
-        const userId = await contract.getUserId(userAddress); // Gọi hàm getUserId
-        return userId.toNumber();
-      } catch (error) {
-        console.error("Error fetching userId:", error);
-        return null;
-      }
-    } else {
-      alert("MetaMask is not installed");
-      return null;
-    }
-  };
-
   // Hàm thêm bình luận
   const handleAddReview = async () => {
     if (!newComment || newRating < 1 || newRating > 5) {
@@ -171,19 +155,32 @@ const Product = () => {
           signer
         );
 
-        // Gọi hàm getUserId từ contract để lấy userId
+        // Lấy địa chỉ ví của user
         const userAddress = await signer.getAddress();
+
+        // Gọi hàm lấy userId từ smart contract
         const userId = await contract.getUserId(userAddress);
+        if (!userId) {
+          alert("User not registered. Please register first.");
+          return;
+        }
 
         // Gọi hàm addReview từ smart contract
-        const tx = await contract.addReview(id, userId, newRating, newComment);
+        const tx = await contract.addReview(
+          id,
+          userId.toNumber(),
+          newRating,
+          newComment
+        );
         await tx.wait();
 
         alert("Review added successfully!");
-        setNewComment(""); // Reset comment
-        setNewRating(5); // Reset rating
 
-        // Fetch lại reviews sau khi thêm
+        // Reset input fields
+        setNewComment("");
+        setNewRating(5);
+
+        // Fetch lại reviews sau khi thêm mới
         const updatedReviews = await fetchReviews(id);
         setReviews(updatedReviews);
       } catch (error) {
@@ -256,7 +253,7 @@ const Product = () => {
           reviews.map((review) => (
             <div key={review.reviewId} className="mb-3">
               <p>
-                <strong>User {review.userId}</strong> ({review.createdAt}):{" "}
+                <h4>User: {review.username}</h4>({review.createdAt}):{" "}
                 <span>{review.comment}</span>
               </p>
               <p>Rating: {review.rating} / 5</p>

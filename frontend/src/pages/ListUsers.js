@@ -1,3 +1,4 @@
+//src\pages\ListUsers.js
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
@@ -5,26 +6,6 @@ import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json
 const ListUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Hàm để gửi thông tin người dùng vào database qua API
-  const saveUserToDatabase = async (user) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save user to database");
-      }
-      console.log("User saved to database successfully");
-    } catch (error) {
-      console.error("Error saving user to database:", error);
-    }
-  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -54,9 +35,6 @@ const ListUsers = () => {
               walletAddress: user.walletAddress,
             };
             usersArray.push(userInfo);
-
-            // Lưu vào database
-            await saveUserToDatabase(userInfo);
           }
 
           setUsers(usersArray);

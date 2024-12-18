@@ -1,3 +1,4 @@
+//frontend\src\pages\Home.js
 import React, { useEffect, useState } from "react";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
 import { ethers } from "ethers";
