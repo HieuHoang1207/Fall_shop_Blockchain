@@ -4,6 +4,8 @@ const mysql = require("mysql2/promise");
 require("dotenv").config();
 
 async function main() {
+  await hre.run("compile"); // Compile contracts trước khi deploy
+
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 

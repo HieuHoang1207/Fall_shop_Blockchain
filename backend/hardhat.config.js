@@ -5,13 +5,17 @@ dotenv.config();
 module.exports = {
   solidity: "0.8.17",
   networks: {
-    hardhat: {
-      chainId: 31337,
+    holesky: {
+      url: "https://holesky.infura.io/v3/9588b325a1c840d6801386cce3191106",
+      accounts: [`${process.env.PRIVATE_KEY_MANAGEMENT}`], // Private key của tài khoản deploy
     },
-    localhost: {
-      url: "http://127.0.0.1:8545",
-      accounts: [`${process.env.PRIVATE_KEY_MANAGEMENT}`], // Private Key của tài khoản
-    },
+    // hardhat: {
+    //   chainId: 31337,
+    // },
+    // localhost: {
+    //   url: "http://127.0.0.1:8545",
+    //   accounts: [`${process.env.PRIVATE_KEY_MANAGEMENT}`], // Private Key của tài khoản
+    // },
   },
   // accounts: [
   //   {
