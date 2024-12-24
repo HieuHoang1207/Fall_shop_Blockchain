@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
+// import exampleImage from "../images/tat1.jpg";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -90,6 +91,7 @@ const Home = () => {
   return (
     <div className="home">
       <h2 className="text-center mb-4">Welcome to FallShop</h2>
+      {/* <img src="/images/tin10.jpg" className="card-img-top" alt="" /> */}
       <div className="row">
         {products.map((product) => (
           <div

@@ -73,6 +73,30 @@ async function main() {
     );
   }
 
+  // Fetch news from MySQL
+  const [news] = await connection.execute("SELECT * FROM news");
+  console.log(`Fetched ${news.length} news from database`);
+
+  // Add news to the Marketplace contract
+  for (const article of news) {
+    // Chuyển đổi createAt và updateAt thành timestamp (số giây từ epoch)
+    const createAtTimestamp = new Date(article.create_at).getTime() / 1000; // Chuyển thành giây
+    const updateAtTimestamp = new Date(article.update_at).getTime() / 1000; // Chuyển thành giây
+
+    const tx = await marketplace.addNews(
+      article.id,
+      article.title,
+      article.content,
+      article.image,
+      createAtTimestamp,
+      updateAtTimestamp
+    );
+    await tx.wait();
+    console.log(
+      `Added news: ${article.title} (ID: ${article.id}),${article.image}`
+    );
+  }
+
   // Close the MySQL connection
   await connection.end();
   console.log("Closed MySQL connection");

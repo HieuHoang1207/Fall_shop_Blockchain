@@ -181,6 +181,40 @@ contract Marketplace {
     revert("User not found");
     }
 
+    // Khai báo cấu trúc News
+    struct News {
+        uint256 id;
+        string title;
+        string content;
+        string image;
+        uint256 createAt;
+        uint256 updateAt;
+    }
 
+    // Mảng để lưu trữ các bài viết news
+    uint256 public newsCount;
+    mapping(uint256 => News) public newsList;
 
+    // Hàm để thêm một bài viết vào newsList
+    function addNews(
+        uint256 id,
+        string memory title,
+        string memory content,
+        string memory image,
+        uint256 createAt,
+        uint256 updateAt
+    ) public {
+        newsCount++; // Tăng newsCount
+        newsList[newsCount] = News(id, title, content, image, createAt, updateAt); // Lưu vào mapping
+    }
+
+    // Hàm lấy số lượng bài viết news
+    function getNewsCount() public view returns (uint256) {
+        return newsCount;
+    }
+
+    // Hàm lấy thông tin bài viết theo ID
+    function getNews(uint256 _id) public view returns (News memory) {
+        return newsList[_id];
+    }
 }
