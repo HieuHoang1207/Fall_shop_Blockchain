@@ -12,4 +12,5 @@ npx hardhat node
 npx hardhat run scripts/deploy.js
 npx hardhat run scripts/deploy.js --network localhost
 npx hardhat compile
+npx hardhat run scripts/deploy.js --network holesky
 ```

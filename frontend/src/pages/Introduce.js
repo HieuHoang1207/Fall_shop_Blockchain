@@ -9,11 +9,11 @@ const Introduce = () => {
         <div className="container">
           <div className="row align-items-center">
             <div className="col-md-6">
-              <h6 className="inner-title">Giới thiệu</h6>
+              <h6 className="inner-title">Introduction</h6>
             </div>
             <div className="col-md-6 text-md-end">
               <div className="beta-breadcrumb font-large">
-                <a href="/">Home</a> / <span>Giới thiệu</span>
+                <a href="/">Home</a> / <span>Introduction</span>
               </div>
             </div>
           </div>
@@ -39,20 +39,20 @@ const Introduce = () => {
                   </div>
                   <div className="col-sm-7">
                     <p>
-                      <b>470 Đường Trần Đại Nghĩa, Ngũ Hành Sơn, Đà Nẵng</b>
+                      <b>470 Tran Dai Nghia Street, Ngu Hanh Son, Da Nang</b>
                     </p>
                     <div className="space20">&nbsp;</div>
                     <p>
-                      Fall Shop chúng tôi không đơn thuần là cái đẹp thời trang,
-                      chúng tôi khao khát kiến tạo những giá trị xã hội nhân
-                      văn, trở thành một lối sống để đồng hành cùng mọi người
-                      trên hành trình thấu cảm vẻ đẹp của chính mình.
+                      Fall Shop is not just about beautiful fashion; we are
+                      eager to create social values and become a lifestyle to
+                      accompany everyone on the journey to understand their own
+                      beauty.
                     </p>
                     <p>
-                      Fall Shop là kênh mua sắm online uy tín hàng đầu, cùng với
-                      đội ngũ nhân viên chuyên nghiệp, chúng tôi cam kết đem
-                      những sản phẩm tốt nhất, với giá cả phải chăng, uy tín và
-                      chất lượng với dịch vụ tốt nhất đến với mọi người.
+                      Fall Shop is a trusted online shopping channel with a
+                      professional team, committed to providing the best
+                      products at reasonable prices, reliable quality, and the
+                      best service for everyone.
                     </p>
                   </div>
                 </div>
@@ -62,12 +62,11 @@ const Introduce = () => {
 
           {/* Achievements Section */}
           <div className="achievements text-center mb-5">
-            <h2>Thành tích</h2>
+            <h2>Achievements</h2>
             <p>
-              Cảm ơn những khách hàng lâu năm đã để lại những bình luận và góp ý
-              đến Fall Shop chúng tôi, chúng tôi xin tiếp thu và ghi nhận ý kiến
-              của mọi người để hoàn thiện hơn và ngày càng tốt hơn để mang lại
-              những sản phẩm, dịch vụ tốt nhất đến khách hàng.
+              We thank our loyal customers for their comments and feedback. We
+              take all suggestions into account and strive to improve to bring
+              the best products and services to our customers.
             </p>
             <div className="row mt-4">
               <div className="col-md-3">
@@ -76,7 +75,7 @@ const Introduce = () => {
                     <i className="fa fa-user"></i>
                   </p>
                   <p className="beta-counter-value">19855</p>
-                  <p className="beta-counter-title">Khách hàng hàng năm</p>
+                  <p className="beta-counter-title">Annual Customers</p>
                 </div>
               </div>
               <div className="col-md-3">
@@ -85,7 +84,7 @@ const Introduce = () => {
                     <i className="fa fa-picture-o"></i>
                   </p>
                   <p className="beta-counter-value">3568</p>
-                  <p className="beta-counter-title">Ảnh khách hàng</p>
+                  <p className="beta-counter-title">Customer Photos</p>
                 </div>
               </div>
               <div className="col-md-3">
@@ -94,7 +93,7 @@ const Introduce = () => {
                     <i className="fa fa-clock-o"></i>
                   </p>
                   <p className="beta-counter-value">258934</p>
-                  <p className="beta-counter-title">Giờ hoạt động</p>
+                  <p className="beta-counter-title">Operating Hours</p>
                 </div>
               </div>
               <div className="col-md-3">
@@ -103,7 +102,7 @@ const Introduce = () => {
                     <i className="fa fa-pencil"></i>
                   </p>
                   <p className="beta-counter-value">150</p>
-                  <p className="beta-counter-title">Bài viết chia sẻ</p>
+                  <p className="beta-counter-title">Shared Posts</p>
                 </div>
               </div>
             </div>
@@ -111,8 +110,8 @@ const Introduce = () => {
 
           {/* Team Section */}
           <div className="team mb-5">
-            <h2 className="text-center">Vị trí</h2>
-            <h5 className="text-center">Người sáng lập Fall Shop</h5>
+            <h2 className="text-center">Position</h2>
+            <h5 className="text-center">Founder of Fall Shop</h5>
             <div className="row mt-4">
               <div className="col-md-6">
                 <div className="beta-person media">
@@ -122,11 +121,11 @@ const Introduce = () => {
                     alt="Hoàng Đình Hiếu"
                   />
                   <div className="media-body">
-                    <h5>Hoàng Đình Hiếu</h5>
-                    <p>Chủ shop</p>
+                    <h5>Hoang Dinh Hieu</h5>
+                    <p>Shop Owner</p>
                     <p>
-                      Hy vọng Shop ngày càng phát triển và đem lại được trải
-                      nghiệm tốt nhất cho khách hàng
+                      I hope the shop continues to grow and bring the best
+                      experience to customers.
                     </p>
                     <a href="https://www.facebook.com/hieufall/">Facebook</a>
                   </div>

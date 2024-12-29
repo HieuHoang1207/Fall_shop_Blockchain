@@ -19,7 +19,7 @@ const ManageProducts = () => {
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Địa chỉ hợp đồng Marketplace
+          "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
           Marketplace.abi,
           signer
         );
@@ -55,7 +55,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Địa chỉ hợp đồng Marketplace
+      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );
@@ -95,7 +95,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Địa chỉ hợp đồng Marketplace
+      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );
@@ -136,7 +136,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Địa chỉ hợp đồng Marketplace
+      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );

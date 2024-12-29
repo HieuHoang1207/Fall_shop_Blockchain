@@ -8,13 +8,14 @@ import Introduce from "./pages/Introduce";
 import ManageProducts from "./pages/ManageProducts";
 import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
+import Order from "./pages/Order";
 
 // Thêm một số class Bootstrap để tạo kiểu
 function App() {
   return (
     <Router>
       <div className="App">
-        {/* Navbar với Bootstrap */}
+        {/* Navbar with Bootstrap */}
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
             <a className="navbar-brand" href="/">
@@ -73,12 +74,17 @@ function App() {
                     List Users
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/order">
+                    Order
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
 
-        {/* Nội dung trang */}
+        {/* Page Content */}
         <div className="container mt-4">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -89,6 +95,7 @@ function App() {
             <Route path="/manage-products" element={<ManageProducts />} />
             <Route path="/login" element={<Login />} />
             <Route path="/listusers" element={<ListUsers />} />
+            <Route path="/order" element={<Order />} />
           </Routes>
         </div>
         {/* Footer */}
@@ -106,20 +113,20 @@ function App() {
                       className="img-fluid"
                     />
                   </a>
-                  <p className="mt-2">Mặc rộng, sống thoáng.</p>
+                  <p className="mt-2">Wide clothes, airy living.</p>
                 </div>
               </div>
 
-              {/* Thông tin */}
+              {/* Information */}
               <div className="col-sm-3">
                 <div className="widget mb-4">
                   <h4 className="widget-title text-uppercase mb-3">
-                    Thông tin
+                    Information
                   </h4>
                   <ul className="list-unstyled">
                     <li>
                       <a href="/" className="text-white text-decoration-none">
-                        <i className="fa fa-chevron-right"></i> Trang chủ
+                        <i className="fa fa-chevron-right"></i> Home
                       </a>
                     </li>
                     <li>
@@ -127,7 +134,7 @@ function App() {
                         href="/product/1"
                         className="text-white text-decoration-none"
                       >
-                        <i className="fa fa-chevron-right"></i> Sản phẩm
+                        <i className="fa fa-chevron-right"></i> Product
                       </a>
                     </li>
                     <li>
@@ -135,7 +142,7 @@ function App() {
                         href="/introduce"
                         className="text-white text-decoration-none"
                       >
-                        <i className="fa fa-chevron-right"></i> Giới thiệu
+                        <i className="fa fa-chevron-right"></i> Introduce
                       </a>
                     </li>
                     <li>
@@ -143,17 +150,17 @@ function App() {
                         href="/contact"
                         className="text-white text-decoration-none"
                       >
-                        <i className="fa fa-chevron-right"></i> Liên hệ
+                        <i className="fa fa-chevron-right"></i> Contact
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              {/* Hỗ trợ */}
+              {/* Support */}
               <div className="col-sm-3">
                 <div className="widget mb-4">
-                  <h4 className="widget-title text-uppercase mb-3">Hỗ trợ</h4>
+                  <h4 className="widget-title text-uppercase mb-3">Support</h4>
                   <ul className="list-unstyled">
                     <li>
                       <a href="/" className="text-white text-decoration-none">
@@ -162,38 +169,36 @@ function App() {
                     </li>
                     <li>
                       <a href="/" className="text-white text-decoration-none">
-                        <i className="fa fa-chevron-right"></i> Chính sách khách
-                        hàng
+                        <i className="fa fa-chevron-right"></i> Customer Policy
                       </a>
                     </li>
                     <li>
                       <a href="/" className="text-white text-decoration-none">
-                        <i className="fa fa-chevron-right"></i> Chính sách bảo
-                        hành
+                        <i className="fa fa-chevron-right"></i> Warranty Policy
                       </a>
                     </li>
                     <li>
                       <a href="/" className="text-white text-decoration-none">
-                        <i className="fa fa-chevron-right"></i> Giao hàng -
-                        thanh toán
+                        <i className="fa fa-chevron-right"></i> Shipping &
+                        Payment
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              {/* Địa chỉ */}
+              {/* Address */}
               <div className="col-sm-3">
                 <div className="widget mb-4">
-                  <h4 className="widget-title text-uppercase mb-3">Địa chỉ</h4>
+                  <h4 className="widget-title text-uppercase mb-3">Address</h4>
                   <ul className="list-unstyled">
                     <li>
                       <a
                         href="https://www.google.com/maps"
                         className="text-white text-decoration-none"
                       >
-                        <i className="fa fa-home"></i> 470 Đường Trần Đại Nghĩa,
-                        Đà Nẵng
+                        <i className="fa fa-home"></i> 470 Tran Dai Nghia
+                        Street, Da Nang
                       </a>
                     </li>
                     <li>
@@ -220,8 +225,7 @@ function App() {
             {/* Footer Bottom */}
             <div className="footer-bottom text-center mt-4">
               <p className="mb-0">
-                &copy; {new Date().getFullYear()} FallShop. Tất cả quyền lợi
-                được bảo lưu.
+                &copy; {new Date().getFullYear()} FallShop. All rights reserved.
               </p>
             </div>
           </div>{" "}

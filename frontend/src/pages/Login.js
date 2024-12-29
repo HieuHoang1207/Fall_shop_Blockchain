@@ -11,7 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
 
-  const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const contractAddress = "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288";
 
   const connectWallet = async () => {
     try {
