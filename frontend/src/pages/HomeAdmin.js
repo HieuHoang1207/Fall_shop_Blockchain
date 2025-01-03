@@ -1,6 +1,5 @@
-//pages\HomeAdmin.js
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
 
@@ -14,6 +13,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [news, setNews] = useState([]);
+  const navigate = useNavigate(); // Hook để chuyển hướng
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +66,12 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
+  // Hàm xử lý logout
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Xóa token khỏi localStorage
+    navigate("/adminlogin"); // Chuyển hướng về trang đăng nhập
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light mt-4">
@@ -100,6 +106,11 @@ const AdminDashboard = () => {
                 <Link className="nav-link" to="/admin/listusers">
                   List Users
                 </Link>
+              </li>
+              <li className="nav-item">
+                <button className="nav-link btn" onClick={handleLogout}>
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
