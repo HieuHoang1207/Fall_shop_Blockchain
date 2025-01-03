@@ -51,34 +51,30 @@ const Home = () => {
 
     fetchProducts();
   }, []);
+  // Handle Add to Order (Giỏ hàng)
+  const handleAddToOrder = (product) => {
+    const { productId, name, price, description, imageURL } = product;
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    existingOrders.push({ productId, name, price, description, imageURL });
+    localStorage.setItem("orders", JSON.stringify(existingOrders)); // Lưu giỏ hàng vào localStorage
+    alert("Product added to your order!");
+  };
 
-  const handleBuy = async (productId, price) => {
-    if (window.ethereum) {
-      try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await provider.send("eth_requestAccounts", []); // Yêu cầu người dùng kết nối MetaMask nếu chưa kết nối
+  const handleBuy = (product) => {
+    const { productId, name, price, description, imageURL } = product;
+    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
-          Marketplace.abi,
-          signer
-        );
-
-        const tx = await contract.buyProduct(productId, {
-          value: ethers.utils.parseEther(price.toString()), // Đảm bảo giá trị hợp lệ (ETH)
-        });
-
-        await tx.wait(); // Chờ giao dịch được xác nhận
-
-        alert("Product purchased successfully!");
-      } catch (error) {
-        console.error("Error in transaction:", error);
-        alert(`Error: ${error.message}`);
-      }
-    } else {
-      alert("MetaMask is not installed");
+    // Thêm sản phẩm vào giỏ hàng nếu chưa tồn tại
+    const isProductInOrder = existingOrders.some(
+      (order) => order.productId === productId
+    );
+    if (!isProductInOrder) {
+      existingOrders.push({ productId, name, price, description, imageURL });
+      localStorage.setItem("orders", JSON.stringify(existingOrders));
     }
+
+    // Chuyển hướng qua trang Order
+    navigate("/order");
   };
 
   const handleProductClick = (id) => {
@@ -124,14 +120,20 @@ const Home = () => {
                 <button
                   className="btn btn-primary"
                   onClick={(e) => {
-                    e.stopPropagation(); // Ngừng sự kiện click lan truyền
-                    handleBuy(
-                      product.productId,
-                      ethers.utils.formatEther(product.price)
-                    );
+                    e.stopPropagation();
+                    handleBuy(product);
                   }}
                 >
                   Buy
+                </button>
+                <button
+                  className="btn btn-secondary mt-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToOrder(product);
+                  }}
+                >
+                  Add to Order
                 </button>
               </div>
             </div>

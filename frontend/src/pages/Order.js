@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Marketplace from "../artifacts/contracts/Marketplace.sol/Marketplace.json";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [buyer, setBuyer] = useState(null);
-
-  const productIds = [1, 2]; // Giả sử productId là 1 và 2
-  const buyerId = 12; // Giả sử ID người mua là 12
-  const contractAddress = "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288"; // Địa chỉ hợp đồng
+  const [buyerInfo, setBuyerInfo] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
+  });
+  const [orders, setOrders] = useState([]);
+  const [productPrices, setProductPrices] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProductsAndBuyer = async () => {
+    const fetchOrders = async () => {
+      const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      setOrders(savedOrders);
+      fetchProductPrices(savedOrders);
+    };
+
+    const fetchProductPrices = async (orders) => {
       if (window.ethereum) {
         try {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-          await provider.send("eth_requestAccounts", []);
           const signer = provider.getSigner();
           const contract = new ethers.Contract(
             process.env.REACT_APP_CONTRACT_ADDRESS,
@@ -24,121 +32,133 @@ const Order = () => {
             signer
           );
 
-          // Lấy thông tin sản phẩm
-          const fetchedProducts = await Promise.all(
-            productIds.map(async (id) => {
-              const product = await contract.products(id);
-              return {
-                id,
-                name: product.name,
-                price: ethers.utils.formatEther(product.price),
-                imageURL: product.imageURL,
-                description: product.description,
-              };
-            })
-          );
-
-          // Lấy thông tin người mua
-          const user = await contract.users(buyerId);
-          const buyerInfo = {
-            userId: user.userId.toString(),
-            username: user.username,
-            email: user.email,
-            walletAddress: user.walletAddress,
-          };
-
-          setProducts(fetchedProducts);
-          setBuyer(buyerInfo);
-          setLoading(false);
+          const prices = {};
+          for (const order of orders) {
+            const product = await contract.products(order.productId);
+            prices[order.productId] = ethers.utils.formatEther(product.price);
+          }
+          setProductPrices(prices);
         } catch (error) {
-          console.error("Error fetching data:", error);
-          setLoading(false);
+          console.error("Error fetching product prices:", error);
         }
       }
     };
 
-    fetchProductsAndBuyer();
+    fetchOrders();
   }, []);
 
-  const calculateTotal = () => {
-    return products
-      .reduce((total, product) => total + parseFloat(product.price), 0)
-      .toFixed(3); // Tổng cũng sẽ theo đơn vị mới (0.001)
-  };
-
   const handleCheckout = async () => {
-    if (window.ethereum) {
+    if (window.ethereum && orders.length > 0) {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          contractAddress,
+          process.env.REACT_APP_CONTRACT_ADDRESS,
           Marketplace.abi,
           signer
         );
 
-        const total = calculateTotal();
-        const tx = await contract.checkout(productIds, {
-          value: ethers.utils.parseEther(total.toString()),
-        });
+        let totalValue = ethers.BigNumber.from(0);
 
+        for (const order of orders) {
+          const priceInEth = ethers.utils.parseEther(
+            productPrices[order.productId] || "0"
+          );
+          totalValue = totalValue.add(priceInEth);
+        }
+
+        const tx = await contract.buyMultipleProducts(
+          orders.map((order) => order.productId),
+          {
+            value: totalValue,
+          }
+        );
         await tx.wait();
+
         alert("Order placed successfully!");
+        localStorage.removeItem("orders");
+        setOrders([]);
+        navigate("/");
       } catch (error) {
         console.error("Checkout error:", error);
         alert("Failed to place order: " + error.message);
       }
+    } else {
+      alert("No orders to checkout.");
     }
   };
 
-  if (loading) return <div className="text-center">Loading...</div>;
+  const handleRemoveOrder = (index) => {
+    const updatedOrders = [...orders];
+    updatedOrders.splice(index, 1);
+    setOrders(updatedOrders);
+    localStorage.setItem("orders", JSON.stringify(updatedOrders));
+  };
+
+  const handleClearOrders = () => {
+    setOrders([]);
+    localStorage.removeItem("orders");
+  };
 
   return (
     <div className="container mt-5">
       <h1 className="text-primary text-center">Order Summary</h1>
 
-      {/* Hiển thị thông tin người mua */}
-      {buyer && (
-        <div className="buyer-info card p-3 mb-4">
-          <h4>Buyer Information</h4>
-          <p>
-            <strong>Name:</strong> {buyer.username}
-          </p>
-          <p>
-            <strong>Email:</strong> {buyer.email}
-          </p>
-          <p>
-            <strong>Wallet:</strong> {buyer.walletAddress}
-          </p>
-          <h5 className="mt-3">Shipping Address:</h5>
-          <p>
-            <strong>Address:</strong>470 Tran Dai Nghia Street, Da Nang
-          </p>
-          <p>
-            <strong>Phone:</strong> 0917 364 860
-          </p>
-        </div>
-      )}
-
+      <div className="buyer-info card p-3 mb-4">
+        <h4>Buyer Information</h4>
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Full Name"
+          value={buyerInfo.name}
+          onChange={(e) => setBuyerInfo({ ...buyerInfo, name: e.target.value })}
+        />
+        <input
+          type="email"
+          className="form-control mb-3"
+          placeholder="Email"
+          value={buyerInfo.email}
+          onChange={(e) =>
+            setBuyerInfo({ ...buyerInfo, email: e.target.value })
+          }
+        />
+        <textarea
+          className="form-control mb-3"
+          placeholder="Shipping Address"
+          value={buyerInfo.address}
+          onChange={(e) =>
+            setBuyerInfo({ ...buyerInfo, address: e.target.value })
+          }
+        />
+        <input
+          type="tel"
+          className="form-control mb-3"
+          placeholder="Phone Number"
+          value={buyerInfo.phone}
+          onChange={(e) =>
+            setBuyerInfo({ ...buyerInfo, phone: e.target.value })
+          }
+        />
+      </div>
       <div className="row">
-        {products.map((product) => (
-          <div key={product.id} className="col-md-6 mb-4">
+        {orders.map((order, index) => (
+          <div className="col-md-6 mb-4" key={index}>
             <div className="card shadow-sm d-flex flex-row">
               {/* Phần ảnh bên trái */}
               <div
                 className="card-img-wrapper"
                 style={{
                   position: "relative",
-                  width: "200px", // Chiều rộng cố định cho ảnh
-                  paddingTop: "40%", // Giữ tỷ lệ ảnh với padding-top
+                  width: "200px",
+                  paddingTop: "40%",
                   overflow: "hidden",
                 }}
               >
                 <img
-                  src={product.imageURL}
+                  src={order.imageURL}
                   className="card-img-top"
-                  alt={product.name}
+                  alt={order.name}
                   style={{
                     objectFit: "cover",
                     width: "100%",
@@ -152,9 +172,17 @@ const Order = () => {
                 className="card-body d-flex flex-column justify-content-between"
                 style={{ width: "calc(100% - 200px)" }}
               >
-                <h5 className="card-title">{product.name}</h5>
-                <p className="card-text">{product.description}</p>
-                <p className="text-success">Price: {product.price} ETH</p>
+                <h5 className="card-title">{order.name}</h5>
+                <p className="card-text">{order.description}</p>
+                <p className="text-primary">
+                  Price: {productPrices[order.productId] || "Loading..."} ETH
+                </p>
+                <button
+                  className="btn btn-danger mt-2"
+                  onClick={() => handleRemoveOrder(index)}
+                >
+                  Remove
+                </button>
               </div>
             </div>
           </div>
@@ -162,12 +190,19 @@ const Order = () => {
       </div>
 
       <div className="text-center mt-4">
-        <h2>Total: {calculateTotal()} ETH</h2>
         <button
           className="btn btn-primary btn-lg mt-3"
           onClick={handleCheckout}
+          disabled={orders.length === 0}
         >
           Checkout
+        </button>
+        <button
+          className="btn btn-secondary btn-lg mt-3 ml-3"
+          onClick={handleClearOrders}
+          disabled={orders.length === 0}
+        >
+          Clear Orders
         </button>
       </div>
     </div>

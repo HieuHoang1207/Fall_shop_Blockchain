@@ -92,6 +92,38 @@ contract Marketplace {
         // Cập nhật thời gian sửa đổi
         _product.updatedAt = block.timestamp;
     }
+    // Mua nhiều sản phẩm cùng lúc
+    function buyMultipleProducts(uint256[] memory _productIds) public payable {
+        uint256 totalPrice = 0;
+
+    // Tính tổng giá trị của tất cả sản phẩm
+    for (uint256 i = 0; i < _productIds.length; i++) {
+        Product storage _product = products[_productIds[i]];
+
+        // Kiểm tra sản phẩm tồn tại và còn hàng
+        require(_product.stock > 0, "One or more products are out of stock");
+
+        // Tính tổng giá trị cần thanh toán
+        totalPrice += _product.price;
+    }
+
+    // Kiểm tra số tiền gửi có đủ để thanh toán không
+    require(msg.value >= totalPrice, "Not enough funds to buy all products");
+
+    // Thực hiện thanh toán và cập nhật từng sản phẩm
+    for (uint256 i = 0; i < _productIds.length; i++) {
+        Product storage _product = products[_productIds[i]];
+        _product.stock--;
+        _product.seller.transfer(_product.price);
+        _product.updatedAt = block.timestamp;
+    }
+
+    // Hoàn trả dư nếu có
+    uint256 refund = msg.value - totalPrice;
+    if (refund > 0) {
+        payable(msg.sender).transfer(refund);
+    }
+}
 
     // Cấu trúc User tương ứng với các cột trong bảng 'users'
     struct User {

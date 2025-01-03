@@ -17,7 +17,7 @@ const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 
 const marketplaceAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 const marketplace = new ethers.Contract(
-  marketplaceAddress,
+  process.env.REACT_APP_CONTRACT_ADDRESS,
   Marketplace.abi,
   provider
 );
