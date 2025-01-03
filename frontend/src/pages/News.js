@@ -13,7 +13,7 @@ const News = () => {
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0x6Cd2aeb230c9Aac04E30eA30bAF7832413De27dE", // Địa chỉ hợp đồng Marketplace
+          process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
           Marketplace.abi,
           signer
         );

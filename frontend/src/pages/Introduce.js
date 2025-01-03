@@ -117,7 +117,7 @@ const Introduce = () => {
                 <div className="beta-person media">
                   <img
                     className="mr-3 img-fluid rounded-circle"
-                    src="https://lh3.google.com/u/0/d/1wmysT5VjpQjo1tpJVwiKtz0eTGruGM0p=w1365-h291-iv1"
+                    src="/images/im13.jpg"
                     alt="Hoàng Đình Hiếu"
                   />
                   <div className="media-body">
@@ -126,6 +126,24 @@ const Introduce = () => {
                     <p>
                       I hope the shop continues to grow and bring the best
                       experience to customers.
+                    </p>
+                    <a href="https://www.facebook.com/hieufall/">Facebook</a>
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="beta-person media">
+                  <img
+                    className="mr-3 img-fluid rounded-circle"
+                    src="/images/im12.jpg"
+                    alt="Hoàng Đình Hiếu"
+                  />
+                  <div className="media-body">
+                    <h5>Hoang Dinh Hieu</h5>
+                    <p>Marketing staff</p>
+                    <p>
+                      I hope the store will reach more customers and achieve
+                      good sales.
                     </p>
                     <a href="https://www.facebook.com/hieufall/">Facebook</a>
                   </div>

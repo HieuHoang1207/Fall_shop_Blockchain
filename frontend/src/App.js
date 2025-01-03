@@ -9,6 +9,9 @@ import ManageProducts from "./pages/ManageProducts";
 import Login from "./pages/Login";
 import ListUsers from "./pages/ListUsers";
 import Order from "./pages/Order";
+import AdminLogin from "./pages/AdminLogin";
+import PrivateRoute from "./component/PrivateRoute";
+import HomeAdmin from "./pages/HomeAdmin";
 
 // Thêm một số class Bootstrap để tạo kiểu
 function App() {
@@ -65,18 +68,13 @@ function App() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/manage-products">
-                    Manage Products
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/listusers">
-                    List Users
-                  </Link>
-                </li>
-                <li className="nav-item">
                   <Link className="nav-link" to="/order">
                     Order
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/adminlogin">
+                    Admin
                   </Link>
                 </li>
               </ul>
@@ -92,10 +90,13 @@ function App() {
             <Route path="/product/:id" element={<Product />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/introduce" element={<Introduce />} />
-            <Route path="/manage-products" element={<ManageProducts />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/listusers" element={<ListUsers />} />
             <Route path="/order" element={<Order />} />
+            <Route path="/adminlogin" element={<AdminLogin />} />
+            <Route
+              path="/admin/*"
+              element={<PrivateRoute element={<HomeAdmin />} />}
+            />
           </Routes>
         </div>
         {/* Footer */}

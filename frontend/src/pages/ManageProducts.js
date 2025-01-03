@@ -19,7 +19,7 @@ const ManageProducts = () => {
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+          process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
           Marketplace.abi,
           signer
         );
@@ -42,6 +42,23 @@ const ManageProducts = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/admin/products", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        alert("You are not authorized to view this page.");
+      }
+    };
+
+    fetchData();
     fetchProducts();
   }, []);
 
@@ -55,7 +72,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+      process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );
@@ -95,7 +112,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+      process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );
@@ -136,7 +153,7 @@ const ManageProducts = () => {
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+      process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
       Marketplace.abi,
       signer
     );
@@ -233,12 +250,22 @@ const ManageProducts = () => {
                 />
               </div>
               <div className="col-md-8">
-                <h5>{product.name}</h5>
-                <p>{product.description}</p>
-                <p>
+                <h5 className="text-primary">{product.name}</h5>
+                <p className="lead">{product.description}</p>
+
+                <div className="mb-2">
+                  <strong>Category:</strong> <span>{product.category}</span>
+                </div>
+
+                <div className="mb-2">
                   <strong>Price:</strong>{" "}
                   {ethers.utils.formatEther(product.price)} ETH
-                </p>
+                </div>
+
+                <div className="mb-3">
+                  <strong>Stock:</strong>{" "}
+                  <span>{product.stock.toString()}</span>
+                </div>
                 <div>
                   <button
                     className="btn btn-warning mr-2"

@@ -12,7 +12,7 @@ const fetchProduct = async (productId) => {
       await provider.send("eth_requestAccounts", []); // Yêu cầu người dùng kết nối MetaMask nếu chưa kết nối
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+        process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
         Marketplace.abi,
         signer
       );
@@ -37,7 +37,7 @@ const fetchReviews = async (productId) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+        process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
         Marketplace.abi,
         signer
       );
@@ -115,7 +115,7 @@ const Product = () => {
 
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+          process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
           Marketplace.abi,
           signer
         );
@@ -150,7 +150,7 @@ const Product = () => {
         await provider.send("eth_requestAccounts", []);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          process.env.REACT_APP_CONTRACT_ADDRESS,
           Marketplace.abi,
           signer
         );

@@ -5,6 +5,7 @@ const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const Marketplace = require("./artifacts/contracts/Marketplace.sol/Marketplace.json");
 const db = require("./db"); // Đảm bảo bạn đã cấu hình đúng kết nối trong db.js
+const adminLogin = require("./routes/admin");
 
 const app = express();
 const cors = require("cors");
@@ -20,8 +21,8 @@ const marketplace = new ethers.Contract(
   Marketplace.abi,
   provider
 );
-
-// API thêm người dùng vào MySQL
+// app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminLogin);
 app.post("/api/users", (req, res) => {
   const { userId, username, email, walletAddress } = req.body;
 
@@ -44,6 +45,6 @@ app.post("/api/users", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+app.listen(3001, () => {
+  console.log("Server running on port 3001");
 });

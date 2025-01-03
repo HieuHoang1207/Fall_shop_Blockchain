@@ -19,7 +19,7 @@ const Order = () => {
           await provider.send("eth_requestAccounts", []);
           const signer = provider.getSigner();
           const contract = new ethers.Contract(
-            contractAddress,
+            process.env.REACT_APP_CONTRACT_ADDRESS,
             Marketplace.abi,
             signer
           );
@@ -113,7 +113,7 @@ const Order = () => {
           </p>
           <h5 className="mt-3">Shipping Address:</h5>
           <p>
-            <strong>Address:</strong> 470 Đường Trần Đại Nghĩa, Đà Nẵng
+            <strong>Address:</strong>470 Tran Dai Nghia Street, Da Nang
           </p>
           <p>
             <strong>Phone:</strong> 0917 364 860

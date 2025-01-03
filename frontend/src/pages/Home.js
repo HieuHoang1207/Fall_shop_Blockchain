@@ -14,12 +14,13 @@ const Home = () => {
     const fetchProducts = async () => {
       if (window.ethereum) {
         try {
+          console.log(process.env.REACT_APP_CONTRACT_ADDRESS);
           // Kết nối với Ethereum và hợp đồng
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           await provider.send("eth_requestAccounts", []); // Yêu cầu người dùng kết nối MetaMask nếu chưa kết nối
           const signer = provider.getSigner();
           const contract = new ethers.Contract(
-            "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+            process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
             Marketplace.abi,
             signer
           );
@@ -59,7 +60,7 @@ const Home = () => {
 
         const signer = provider.getSigner();
         const contract = new ethers.Contract(
-          "0xaE7b7A1c6C4d859e19301ccAc2C6eD28A4C51288", // Địa chỉ hợp đồng Marketplace
+          process.env.REACT_APP_CONTRACT_ADDRESS, // Địa chỉ hợp đồng Marketplace
           Marketplace.abi,
           signer
         );

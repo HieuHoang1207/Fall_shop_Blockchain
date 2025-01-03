@@ -27,7 +27,7 @@ const Login = () => {
 
       setAddress(walletAddress);
       const contract = new ethers.Contract(
-        contractAddress,
+        process.env.REACT_APP_CONTRACT_ADDRESS,
         Marketplace.abi,
         signer
       );
